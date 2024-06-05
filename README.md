@@ -14,4 +14,6 @@ Este proyecto es un conversor de monedas desarrollado en Java que consume la API
 <h3>Previsualizaciones</h3>
 <h4>Validación con <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Scanner.html#hasNextDouble()">hasNextDouble().</a></h4>
 Verifica que el dato ingresado sea double, regresa true en caso de ser double o false en caso contrario.
+![Validacion con hasNextDouble](https://github.com/andresAGM/challenge-conversor-de-monedas-one/blob/master/ConversorDeMonedas/img/validacionDeTextoIngresado.png)
+
 
