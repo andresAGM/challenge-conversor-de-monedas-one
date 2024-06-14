@@ -1,6 +1,10 @@
 package com.conversordemonedas.main;
 
 import com.conversordemonedas.model.ApiMonedasExchangeRate;
+import com.conversordemonedas.records.MonedaExchangeRate;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.Scanner;
 
@@ -12,6 +16,7 @@ public class Main
         Scanner scanner = new Scanner(System.in);
         //vector con las opciones del menu
         String[] opciones = {"Convertir USD a ARG", "Convertir ARG a USD", "Convertir USD a BRL", "Convertir BRL a USD", "Convertir USD a COP", "Convertir COP a USD", "Salir"};
+
 
         //Bucle para mostrar el menu
         //Se utiliza el true para que el bucle se ejecute siempre
@@ -34,7 +39,7 @@ public class Main
             int opcion = scanner.nextInt();
 
             //si la opcion es 7 salimos del bucle
-            //sino esta esta condicion en caso de elegir el 7 no sale del sistema
+            //sino esta condicion en caso de elegir el 7 no sale del sistema
             //porque continua procesando el codigo
             if (opcion == 7)
             {
@@ -59,54 +64,58 @@ public class Main
                 System.out.println("Por favor ingrese un número decimal válido");
                 scanner.next();
             }
-
             cantidad = scanner.nextDouble();
 
             /*
-            * Creamos un objeto de la clase ApiMonedasExchangeRate
-            * y llamamos al metodo CurrencyConverter
-            * pasandole como parametros la moneda origen, la moneda destino y la cantidad a convertir
-            * *
-            * Luego mostramos el resultado de la conversion
-            * */
-            ApiMonedasExchangeRate apiMonedasExchangeRate = new ApiMonedasExchangeRate();
+             * Creamos un objeto de la clase ApiMonedasExchangeRate
+             * y llamamos al metodo CurrencyConverter
+             * pasandole como parametros la moneda origen, la moneda destino y la cantidad a convertir
+             * Luego mostramos el resultado de la conversion
+             * */
+            var api = new ApiMonedasExchangeRate();
+            //Se crea el objeto Gson
+            Gson gson = new GsonBuilder()
+                    //se utilizo LOWER_CASE_WITH_UNDERSCORES PORQUE EL JSON VIENE EN SNAKE_CASE
+                    .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                    .create();
+
             switch (opcion)
             {
                 case 1:
                     System.out.println("Convirtiendo USD a ARS");
-                    System.out.print("$" + (int) cantidad + " ");
-                    apiMonedasExchangeRate.CurrencyConverter("USD", "ARS", cantidad);
-                    System.out.println(" PESOS ARGENTINOS");
+                    var json = api.CurrencyConverter("USD", "ARS", cantidad);
+                    MonedaExchangeRate moneda = gson.fromJson(json, MonedaExchangeRate.class);
+                    System.out.println("$" + (int) cantidad + " DOLARES" + " son " + "$" + moneda.conversion_result() + " PESOS ARGENTINOS");
                     break;
                 case 2:
                     System.out.println("Convirtiendo ARS a USD");
-                    System.out.print("$" + cantidad + " ");
-                    apiMonedasExchangeRate.CurrencyConverter("ARS", "USD", cantidad);
-                    System.out.println(" DOLARES");
+                    var json2 = api.CurrencyConverter("ARS", "USD", cantidad);
+                    MonedaExchangeRate moneda2 = gson.fromJson(json2, MonedaExchangeRate.class);
+                    System.out.println("$" + cantidad + " PESOS ARGENTINOS" + " son " + "$" + moneda2.conversion_result() + " DOLARES");
                     break;
                 case 3:
                     System.out.println("Convirtiendo USD a BRL");
-                    System.out.print("$" + (int) cantidad + " ");
-                    apiMonedasExchangeRate.CurrencyConverter("USD", "BRL", cantidad);
-                    System.out.println(" REAIS");
+                    var json3 = api.CurrencyConverter("USD", "BRL", cantidad);
+                    MonedaExchangeRate moneda3 = gson.fromJson(json3, MonedaExchangeRate.class);
+                    System.out.println("$" + (int) cantidad + " DOLARES" + " son " + "$" + moneda3.conversion_result() + " REALES BRASILEÑOS");
                     break;
                 case 4:
                     System.out.println("Convirtiendo BRL a USD");
-                    System.out.print("$" + cantidad + " ");
-                    apiMonedasExchangeRate.CurrencyConverter("BRL", "USD", cantidad);
-                    System.out.println(" DOLARES");
+                    var json4 = api.CurrencyConverter("BRL", "USD", cantidad);
+                    MonedaExchangeRate moneda4 = gson.fromJson(json4, MonedaExchangeRate.class);
+                    System.out.println("$" + cantidad + " REALES BRASILEÑOS" + " son " + "$" + moneda4.conversion_result() + " DOLARES");
                     break;
                 case 5:
                     System.out.println("Convirtiendo USD a COP");
-                    System.out.print("$" + (int) cantidad + " ");
-                    apiMonedasExchangeRate.CurrencyConverter("USD", "COP", cantidad);
-                    System.out.println(" PESOS COLOMBIANOS");
+                    var json5 = api.CurrencyConverter("USD", "COP", cantidad);
+                    MonedaExchangeRate moneda5 = gson.fromJson(json5, MonedaExchangeRate.class);
+                    System.out.println("$" + (int) cantidad + " DOLARES" + " son " + "$" + moneda5.conversion_result() + " PESOS COLOMBIANOS");
                     break;
                 case 6:
                     System.out.println("Convirtiendo COP a USD");
-                    System.out.print("$" + cantidad + " ");
-                    apiMonedasExchangeRate.CurrencyConverter("COP", "USD", cantidad);
-                    System.out.println(" DOLARES");
+                    var json6 = api.CurrencyConverter("COP", "USD", cantidad);
+                    MonedaExchangeRate moneda6 = gson.fromJson(json6, MonedaExchangeRate.class);
+                    System.out.println("$" + cantidad + " PESOS COLOMBIANOS" + " son " + "$" + moneda6.conversion_result() + " DOLARES");
                     break;
                 case 7:
                     System.exit(0);
